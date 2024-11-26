@@ -2,31 +2,31 @@ class UserEntity {
   final String id;
   final String name;
   final String email;
-  final String password;
+  final String passwordHash;
   final String profilePicture;
 
   UserEntity(
       {required this.id,
       required this.name,
       required this.email,
-      required this.password,
+      required this.passwordHash,
       required this.profilePicture});
 
-  factory UserEntity.fromMap(Map<String, dynamic> map) {
+  factory UserEntity.fromJson(Map<String, dynamic> json) {
     return UserEntity(
-      id: map['id'],
-      name: map['name'],
-      email: map['email'],
-      password: map['password'],
-      profilePicture: map['profilePicture'],
+      id: json['id'],
+      name: json['name'],
+      email: json['email'],
+      passwordHash: json['passwordHash'],
+      profilePicture: json['profilePicture'],
     );
   }
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return {
       'id': id,
       'name': name,
       'email': email,
-      'password': password,
+      'password': passwordHash,
     };
   }
 }

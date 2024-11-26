@@ -1,20 +1,7 @@
-import 'package:bumble_clone/domain/data/user_entity.dart';
 import 'package:bumble_clone/domain/repository/user_repository.dart';
+import 'package:bumble_clone/presentation/bloc/user/user_event.dart';
+import 'package:bumble_clone/presentation/bloc/user/user_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-abstract class UserEvent {}
-
-class FetchUsers extends UserEvent {}
-
-abstract class UserState {}
-
-class UsersLoading extends UserState {}
-
-class UsersLoaded extends UserState {
-  final List<UserEntity> users;
-
-  UsersLoaded(this.users);
-}
 
 class UserBloc extends Bloc<UserEvent, UserState> {
   final IUserRepository _userRepository;

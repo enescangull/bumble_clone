@@ -1,9 +1,13 @@
-import 'package:bumble_clone/presentation/screens/register.dart';
-import 'package:bumble_clone/presentation/screens/swipe_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../common/app_colors.dart';
+import '../../common/constants.dart';
 import '../bloc/auth/auth_bloc.dart';
+import '../bloc/auth/auth_event.dart';
+import '../bloc/auth/auth_state.dart';
+import 'register.dart';
+import 'swipe_screen.dart';
 
 class LoginPage extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
@@ -17,16 +21,20 @@ class LoginPage extends StatelessWidget {
       body: BlocProvider(
         create: (context) => AuthBloc(),
         child: BlocListener<AuthBloc, AuthState>(
-          listener: (context, state) {
+          listener: (context, state) async {
             if (state is Authenticated) {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text('Welcome ${state.email}'),
               ));
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const SwipeScreen(),
-                  ));
+
+              await Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SwipeScreen(),
+                ),
+                (Route<dynamic> route) => false,
+              );
+
               // Navigate to home page
             } else if (state is AuthError) {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -90,6 +98,7 @@ class LoginPage extends StatelessWidget {
 
 Widget _emailField(TextEditingController controller) {
   return TextField(
+    keyboardType: TextInputType.emailAddress,
     decoration: const InputDecoration(hintText: "Email"),
     controller: controller,
   );
@@ -127,32 +136,29 @@ Widget _signUpLead(context) {
 class _logoAndSentence extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AuthBloc(),
-      child: Column(
-        children: [
-          //logo
-          SizedBox(
-            height: 100,
-            child: Image.asset(
-              'assets/bumble_logo.png',
-              fit: BoxFit.cover,
-            ),
+    return Column(
+      children: [
+        //logo
+        SizedBox(
+          height: 100,
+          child: Image.asset(
+            Constants.bumbleLogo,
+            fit: BoxFit.cover,
           ),
-          //sentence
-          Text(
-            "MAKE THE\nFIRST MOVE",
-            style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                color: AppColors.primaryYellow,
-                fontWeight: FontWeight.bold,
-                shadows: [
-                  const Shadow(color: AppColors.black, offset: Offset(-2, 1)),
-                  const Shadow(color: AppColors.black, offset: Offset(-2.5, 2)),
-                ]),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
+        ),
+        //sentence
+        Text(
+          "MAKE THE\nFIRST MOVE",
+          style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+              color: AppColors.primaryYellow,
+              fontWeight: FontWeight.bold,
+              shadows: [
+                const Shadow(color: AppColors.black, offset: Offset(-2, 1)),
+                const Shadow(color: AppColors.black, offset: Offset(-2.5, 2)),
+              ]),
+          textAlign: TextAlign.center,
+        ),
+      ],
     );
   }
 }
