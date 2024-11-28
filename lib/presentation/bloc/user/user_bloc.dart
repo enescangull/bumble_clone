@@ -4,9 +4,9 @@ import 'package:bumble_clone/presentation/bloc/user/user_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
-  final IUserRepository _userRepository;
+  final IUserRepository _userRepository = IUserRepository();
 
-  UserBloc(this._userRepository) : super(UsersLoading()) {
+  UserBloc() : super(UsersLoading()) {
     on<FetchUsers>((event, emit) async {
       emit(UsersLoading());
       try {

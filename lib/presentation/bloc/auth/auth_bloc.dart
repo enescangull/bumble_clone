@@ -14,6 +14,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           await _authRepository.login(event.email, event.password);
           final email = _authRepository.getCurrentUserEmail();
           emit(Authenticated(email!));
+          // emit(AuthOnboardingRequired());
         } catch (e) {
           emit(AuthError(e.toString()));
         }
@@ -25,8 +26,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthLoading());
         try {
           await _authRepository.register(event.email, event.password);
-          final email = _authRepository.getCurrentUserEmail();
-          emit(Authenticated(email!));
+          emit(AuthOnboardingRequired(event.email));
         } catch (e) {
           emit(AuthError(e.toString()));
         }

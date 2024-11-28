@@ -1,53 +1,55 @@
+import 'package:bumble_clone/common/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../common/app_colors.dart';
-import '../../common/constants.dart';
 import '../bloc/auth/auth_bloc.dart';
 import '../bloc/auth/auth_event.dart';
 import '../bloc/auth/auth_state.dart';
-import 'register_page.dart';
-import 'swipe_screen.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController emailController = TextEditingController();
-  bool _isVisible = false;
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
+  bool _isVisible = false;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocListener<AuthBloc, AuthState>(
-        listener: (context, state) async {
-          if (state is Authenticated) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('Welcome ${state.email}'),
-            ));
-
-            Navigator.pushReplacementNamed(context, '/swipescreen');
-
-            // Navigate to home page
-          } else if (state is AuthError) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('Error: ${state.message}'),
-            ));
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state is AuthOnboardingRequired) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("Let's learn about you"),
+          ));
+          Navigator.restorablePushNamedAndRemoveUntil(
+            context,
+            '/onboarding',
+            (route) => false,
+          );
+          // Navigate to home page
+        } else if (state is AuthError) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('Error: ${state.message}'),
+          ));
+        }
+      },
+      child: BlocBuilder<AuthBloc, AuthState>(
+        builder: (context, state) {
+          if (state is AuthLoading) {
+            return const Center(child: CircularProgressIndicator());
           }
-        },
-        child: BlocBuilder<AuthBloc, AuthState>(
-          builder: (context, state) {
-            if (state is AuthLoading) {
-              return const Center(child: CircularProgressIndicator());
-            }
 
-            return Scaffold(
-              body: SafeArea(
+          return Scaffold(
+            body: SingleChildScrollView(
+              child: SafeArea(
                   child: Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 25, vertical: 50),
@@ -55,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      _logoAndSentence(),
+                      const _logoAndSentence(),
                       Column(
                         children: [
                           _emailField(emailController),
@@ -66,21 +68,29 @@ class _LoginPageState extends State<LoginPage> {
                             });
                           }, _isVisible),
                           const SizedBox(height: 5),
+                          _passwordField(confirmPasswordController, () {
+                            setState(() {
+                              _isVisible = !_isVisible;
+                            });
+                          }, _isVisible),
+                          const SizedBox(height: 5),
                           _signUpLead(context),
                           const SizedBox(height: 20),
                           OutlinedButton(
                               onPressed: () {
                                 BlocProvider.of<AuthBloc>(context).add(
-                                    LoginEvent(
+                                    RegisterEvent(
                                         email: emailController.text,
-                                        password: passwordController.text));
+                                        password: passwordController.text,
+                                        confirmPassword:
+                                            confirmPasswordController.text));
                               },
                               child: const Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(Icons.login),
                                   SizedBox(width: 2),
-                                  Text("Login")
+                                  Text("Register")
                                 ],
                               ))
                         ],
@@ -89,9 +99,9 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               )),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -123,17 +133,13 @@ Widget _passwordField(
 Widget _signUpLead(context) {
   return Row(
     children: [
-      const Text("   Don't you have an account?"),
+      const Text("   Have you got a account?"),
       GestureDetector(
         onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const RegisterScreen(),
-              ));
+          Navigator.pushNamed(context, '/login');
         },
         child: const Text(
-          " Sign Up",
+          " Sign In",
           style: TextStyle(color: AppColors.darkYellow),
         ),
       )
@@ -143,6 +149,7 @@ Widget _signUpLead(context) {
 
 // ignore: camel_case_types
 class _logoAndSentence extends StatelessWidget {
+  const _logoAndSentence();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -151,7 +158,7 @@ class _logoAndSentence extends StatelessWidget {
         SizedBox(
           height: 100,
           child: Image.asset(
-            Constants.bumbleLogo,
+            'assets/bumble_logo.png',
             fit: BoxFit.cover,
           ),
         ),

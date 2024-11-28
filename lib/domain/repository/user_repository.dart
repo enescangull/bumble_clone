@@ -1,11 +1,18 @@
-import 'package:bumble_clone/data/repositories/user_repository.dart';
-import 'package:bumble_clone/domain/data/user_entity.dart';
+import 'package:bumble_clone/core/services/user_service.dart';
+import 'package:bumble_clone/data/models/user_model.dart';
 
 class IUserRepository {
-  final UserRepository repository;
+  final UserService _service = UserService();
 
-  IUserRepository(this.repository);
-  Future<List<UserEntity>> call() async {
-    return await repository.fetchUsers();
+  Future<List<UserModel>?> call() async {
+    return await _service.fetchUsers();
+  }
+
+  Future<void> updateUser(Map<String, dynamic> profileData) async {
+    await _service.updateUser(profileData);
+  }
+
+  Future<Map<String, dynamic>> getAuthenticatedUser() async {
+    return await _service.getAuthenticatedUser();
   }
 }
