@@ -1,7 +1,7 @@
 import 'package:bumble_clone/domain/repository/auth_repository.dart';
 
-import 'package:bumble_clone/presentation/bloc/auth/auth_event.dart';
-import 'package:bumble_clone/presentation/bloc/auth/auth_state.dart';
+import 'package:bumble_clone/presentation/auth/bloc/auth_event.dart';
+import 'package:bumble_clone/presentation/auth/bloc/auth_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {

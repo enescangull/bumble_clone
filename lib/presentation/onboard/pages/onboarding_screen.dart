@@ -1,9 +1,9 @@
 import 'package:bumble_clone/common/app_colors.dart';
 import 'package:bumble_clone/common/components/custom_text_field.dart';
 import 'package:bumble_clone/common/constants.dart';
-import 'package:bumble_clone/presentation/bloc/onboarding/onboarding_bloc.dart';
-import 'package:bumble_clone/presentation/bloc/onboarding/onboarding_event.dart';
-import 'package:bumble_clone/presentation/bloc/onboarding/onboarding_state.dart';
+import 'package:bumble_clone/presentation/onboard/bloc/onboarding_bloc.dart';
+import 'package:bumble_clone/presentation/onboard/bloc/onboarding_event.dart';
+import 'package:bumble_clone/presentation/onboard/bloc/onboarding_state.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -62,7 +62,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           child: BlocBuilder<OnboardingBloc, OnboardingState>(
             builder: (context, state) {
               if (state is OnboardingLoading) {
-                return const CircularProgressIndicator();
+                return const Scaffold(
+                  body: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
               }
 
               return Scaffold(

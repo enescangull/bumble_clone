@@ -1,4 +1,4 @@
-import 'package:bumble_clone/common/constants.dart';
+import 'package:bumble_clone/common/env.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseService {
@@ -10,8 +10,8 @@ class SupabaseService {
 
   Future<void> initialize() async {
     await Supabase.initialize(
-      url: Constants.supabaseUrl,
-      anonKey: Constants.supabaseAnonKey,
+      url: SupaBase.supabaseUrl,
+      anonKey: SupaBase.supabaseAnonKey,
     );
     client = Supabase.instance.client;
   }
