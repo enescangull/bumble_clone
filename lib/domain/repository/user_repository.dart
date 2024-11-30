@@ -8,8 +8,24 @@ class IUserRepository {
     return await _service.fetchUsers();
   }
 
-  Future<void> updateUser(Map<String, dynamic> profileData) async {
-    await _service.updateUser(profileData);
+  String getUserId() {
+    return _service.getUserId();
+  }
+
+  Future<void> updateUser({
+    required String userId,
+    required String name,
+    required DateTime birthDate,
+    required String gender,
+    required String preferredGender,
+  }) async {
+    await _service.updateAdditionalInfo(
+      name: name,
+      birthDate: birthDate,
+      gender: gender,
+      preferredGender: preferredGender,
+      userId: userId,
+    );
   }
 
   Future<Map<String, dynamic>> getAuthenticatedUser() async {

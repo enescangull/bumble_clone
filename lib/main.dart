@@ -1,5 +1,6 @@
 import 'package:bumble_clone/presentation/bloc/auth/auth_bloc.dart';
-import 'package:bumble_clone/presentation/screens/onboarding_page.dart';
+import 'package:bumble_clone/presentation/bloc/onboarding/onboarding_bloc.dart';
+import 'package:bumble_clone/presentation/screens/onboarding_screen.dart';
 import 'package:bumble_clone/presentation/screens/register_page.dart';
 import 'package:bumble_clone/presentation/screens/swipe_screen.dart';
 import 'package:flutter/material.dart';
@@ -26,10 +27,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       routes: {
-        '/swipescreen': (context) => const SwipeScreen(),
+        '/home': (context) => const SwipeScreen(),
         '/onboarding': (context) => const OnboardingScreen(),
         '/register': (context) => const RegisterScreen(),
-        '/login': (context) => LoginPage(),
+        '/login': (context) => const LoginPage(),
       },
       debugShowCheckedModeBanner: false,
       title: 'Bumble Clone',

@@ -16,8 +16,4 @@ class AuthError extends AuthState {
   AuthError(this.message);
 }
 
-class AuthOnboardingRequired extends AuthState {
-  final String email;
-
-  AuthOnboardingRequired(this.email);
-}
+class AuthOnboardingRequired extends AuthState {}

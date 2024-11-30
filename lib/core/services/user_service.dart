@@ -9,15 +9,26 @@ class UserService {
     return (response as List).map((user) => UserModel.fromJson(user)).toList();
   }
 
-  Future<void> updateUser(Map<String, dynamic> profileData) async {
+  String getUserId() {
+    return _client.auth.currentUser!.id;
+  }
+
+  Future<void> updateAdditionalInfo({
+    required String userId,
+    required String name,
+    required DateTime birthDate,
+    required String gender,
+    required String preferredGender,
+  }) async {
     try {
-      final currentUser = _client.auth.currentUser;
-      if (currentUser == null) {
-        throw Exception('No authenticated user found');
-      }
-      await _client.from('users').update(profileData).eq('id', currentUser.id);
+      await _client.from('users').update({
+        'name': name,
+        'birth_date': birthDate.toIso8601String(),
+        'gender': gender,
+        'preferred_gender': preferredGender,
+      }).eq('id', userId);
     } catch (e) {
-      throw Exception(e);
+      throw Exception("Error saving user data: $e");
     }
   }
 

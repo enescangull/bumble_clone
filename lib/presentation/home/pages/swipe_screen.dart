@@ -27,7 +27,7 @@ class SwipeScreen extends StatelessWidget {
           IconButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Logged out successfuully')));
+                    const SnackBar(content: Text('Logged out successfully')));
                 _service.signOut();
                 Navigator.pushReplacementNamed(context, '/login');
               },

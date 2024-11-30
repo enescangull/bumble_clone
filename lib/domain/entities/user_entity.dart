@@ -1,25 +1,23 @@
 class UserEntity {
   final String id;
-  final String name;
   final String email;
   final String passwordHash;
-  final String profilePicture;
-  final String bio;
-  final String gender;
-  final String preferredGender;
-  final DateTime birthDate;
-  final DateTime createdAt;
+  String? name;
+  String? profilePicture;
+  String? bio;
+  String? gender;
+  String? preferredGender;
+  DateTime? birthDate;
 
-  UserEntity({
+  UserEntity(
+    this.name,
+    this.profilePicture,
+    this.gender,
+    this.preferredGender,
+    this.birthDate,
+    this.bio, {
     required this.id,
-    required this.name,
     required this.email,
     required this.passwordHash,
-    required this.profilePicture,
-    required this.bio,
-    required this.gender,
-    required this.preferredGender,
-    required this.birthDate,
-    required this.createdAt,
   });
 }

@@ -19,11 +19,20 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
 
     on<SubmitOnboardingData>((event, emit) async {
       emit(OnboardingLoading());
+      final userId = _repository.getUserId();
+
       try {
-        await _repository.updateUser(event.userData);
+        await _repository.updateUser(
+          userId: userId,
+          name: event.name,
+          birthDate: event.birthDate,
+          gender: event.gender,
+          preferredGender: event.preferredGender,
+        );
         emit(OnboardingSuccess());
-      } catch (e) {
-        emit(OnboardingFailure(e.toString()));
+      } catch (error) {
+        emit(OnboardingFailure("Hata burda ${error.toString()}"));
+        print(error.toString());
       }
     });
   }

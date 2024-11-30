@@ -1,4 +1,5 @@
 import 'package:bumble_clone/domain/repository/auth_repository.dart';
+
 import 'package:bumble_clone/presentation/bloc/auth/auth_event.dart';
 import 'package:bumble_clone/presentation/bloc/auth/auth_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,8 +26,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       (event, emit) async {
         emit(AuthLoading());
         try {
+          if (event.password != event.confirmPassword) {
+            throw Exception("Passwords do not match!");
+          }
+
           await _authRepository.register(event.email, event.password);
-          emit(AuthOnboardingRequired(event.email));
+
+          emit(AuthOnboardingRequired());
         } catch (e) {
           emit(AuthError(e.toString()));
         }

@@ -26,14 +26,14 @@ class AppTheme {
       textTheme: ButtonTextTheme.primary,
     ),
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      backgroundColor: AppColors.primaryYellow,
-      foregroundColor: AppColors.black,
-    ),
+        backgroundColor: Color.fromARGB(152, 255, 255, 255),
+        foregroundColor: AppColors.primaryYellow,
+        shape: CircleBorder(side: BorderSide.none)),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: AppColors.white,
+      fillColor: const Color.fromARGB(152, 255, 255, 255),
       enabledBorder: OutlineInputBorder(
-        borderSide: const BorderSide(color: AppColors.lightGrey),
+        borderSide: const BorderSide(width: 0, strokeAlign: 0),
         borderRadius: BorderRadius.circular(8),
       ),
       focusedBorder: OutlineInputBorder(
@@ -48,7 +48,7 @@ class AppTheme {
         borderSide: const BorderSide(color: AppColors.errorRed),
         borderRadius: BorderRadius.circular(8),
       ),
-      hintStyle: const TextStyle(color: AppColors.lightGrey),
+      hintStyle: const TextStyle(color: AppColors.primaryYellow),
     ),
   );
 
@@ -75,14 +75,14 @@ class AppTheme {
       textTheme: ButtonTextTheme.primary,
     ),
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      backgroundColor: AppColors.darkYellow,
-      foregroundColor: AppColors.white,
+      backgroundColor: Color.fromARGB(152, 0, 0, 0),
+      foregroundColor: AppColors.black,
     ),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: AppColors.grey,
+      fillColor: const Color.fromARGB(152, 0, 0, 0),
       enabledBorder: OutlineInputBorder(
-        borderSide: const BorderSide(color: AppColors.lightGrey),
+        borderSide: const BorderSide(color: AppColors.black),
         borderRadius: BorderRadius.circular(8),
       ),
       focusedBorder: OutlineInputBorder(
@@ -97,7 +97,7 @@ class AppTheme {
         borderSide: const BorderSide(color: AppColors.errorRed),
         borderRadius: BorderRadius.circular(8),
       ),
-      hintStyle: const TextStyle(color: AppColors.lightGrey),
+      hintStyle: const TextStyle(color: AppColors.primaryYellow),
     ),
   );
 }

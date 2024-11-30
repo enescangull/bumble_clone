@@ -1,4 +1,3 @@
-import 'package:bumble_clone/common/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,41 +22,40 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthBloc, AuthState>(
-      listener: (context, state) {
-        if (state is AuthOnboardingRequired) {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text("Let's learn about you"),
-          ));
-          Navigator.restorablePushNamedAndRemoveUntil(
-            context,
-            '/onboarding',
-            (route) => false,
-          );
-          // Navigate to home page
-        } else if (state is AuthError) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text('Error: ${state.message}'),
-          ));
-        }
-      },
-      child: BlocBuilder<AuthBloc, AuthState>(
-        builder: (context, state) {
-          if (state is AuthLoading) {
-            return const Center(child: CircularProgressIndicator());
+    return Scaffold(
+      body: BlocListener<AuthBloc, AuthState>(
+        listener: (context, state) {
+          if (state is AuthOnboardingRequired) {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text("Let's learn about you"),
+            ));
+            Navigator.pushReplacementNamed(
+              context,
+              '/onboarding',
+            );
+            // Navigate to home page
+          } else if (state is AuthError) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('Error: ${state.message}'),
+            ));
           }
+        },
+        child: BlocBuilder<AuthBloc, AuthState>(
+          builder: (context, state) {
+            if (state is AuthLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-          return Scaffold(
-            body: SingleChildScrollView(
-              child: SafeArea(
+            return Scaffold(
+              body: SafeArea(
                   child: Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 25, vertical: 50),
                 child: Center(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const _logoAndSentence(),
+                      Expanded(child: Container()),
                       Column(
                         children: [
                           _emailField(emailController),
@@ -99,9 +97,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ),
               )),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

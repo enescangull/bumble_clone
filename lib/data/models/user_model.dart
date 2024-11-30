@@ -1,74 +1,76 @@
 import 'package:bumble_clone/domain/entities/user_entity.dart';
 
 class UserModel {
-  final String id;
-  final String name;
+  String id;
+  String? name;
   final String email;
   final String passwordHash;
-  final String profilePicture;
-  final String bio;
-  final String gender;
-  final String preferredGender;
-  final DateTime birthDate;
-  final DateTime createdAt;
+  String? profilePicture; // Opsiyonel alan
+  String? bio; // Opsiyonel alan
+  String? gender; // Opsiyonel alan
+  String? preferredGender; // Opsiyonel alan
+  DateTime? birthDate; // Nullable alan
 
   UserModel({
     required this.id,
     required this.name,
     required this.email,
     required this.passwordHash,
-    required this.profilePicture,
-    required this.bio,
-    required this.gender,
-    required this.preferredGender,
-    required this.birthDate,
-    required this.createdAt,
+    this.profilePicture,
+    this.bio,
+    this.gender,
+    this.preferredGender,
+    this.birthDate,
   });
 
-  factory UserModel.fromJson(Map<String, dynamic> json) {
-    return UserModel(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      email: json['email'] as String,
-      passwordHash: json['passwordHash'] as String,
-      profilePicture: json['profilePicture'] as String,
-      bio: json['bio'] as String,
-      gender: json['gender'] as String,
-      preferredGender: json['gender'] as String,
-      birthDate: json['birthDate'],
-      createdAt: DateTime.parse(json['createdAt'] as String),
-    );
-  }
+  /// JSON'a dönüştürme
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'name': name,
       'email': email,
-      'password': passwordHash,
-      'profilePicture': profilePicture,
+      'password_hash': passwordHash,
+      'name': name,
+      'profile_picture': profilePicture,
       'bio': bio,
       'gender': gender,
-      'preferredGender': preferredGender,
-      'birthDate': birthDate,
-      'createdAt': createdAt,
+      'preferred_gender': preferredGender,
+      'birth_date': birthDate?.toIso8601String(), // Null kontrolü
     };
   }
 
-  UserEntity toEntity() {
-    return UserEntity(
-      id: id,
-      name: name,
-      email: email,
-      passwordHash: passwordHash,
-      profilePicture: profilePicture,
-      bio: bio,
-      gender: gender,
-      preferredGender: preferredGender,
-      birthDate: birthDate,
-      createdAt: createdAt,
+  /// JSON'dan Model'e dönüştürme
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
+      id: json['id'] as String,
+      email: json['email'] as String,
+      passwordHash: json['password_hash'] as String,
+      name: json['name'] as String? ?? '', // Varsayılan boş string
+      profilePicture: json['profile_picture'] as String?,
+      bio: json['bio'] as String?,
+      gender: json['gender'] as String?,
+      preferredGender: json['preferred_gender'] as String?,
+      birthDate: json['birth_date'] != null
+          ? DateTime.parse(json['birth_date'] as String)
+          : null,
     );
   }
 
+  /// Entity'ye dönüştürme
+  UserEntity toEntity() {
+    return UserEntity(
+      id: id,
+      name,
+      profilePicture,
+      bio,
+      gender,
+      birthDate,
+      preferredGender,
+      email: email,
+      passwordHash: passwordHash,
+    );
+  }
+
+  /// Entity'den Model'e dönüştürme
   factory UserModel.fromEntity(UserEntity entity) {
     return UserModel(
       id: entity.id,
@@ -80,7 +82,6 @@ class UserModel {
       gender: entity.gender,
       preferredGender: entity.preferredGender,
       birthDate: entity.birthDate,
-      createdAt: entity.createdAt,
     );
   }
 }

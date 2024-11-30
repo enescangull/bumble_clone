@@ -6,8 +6,6 @@ import '../../common/constants.dart';
 import '../bloc/auth/auth_bloc.dart';
 import '../bloc/auth/auth_event.dart';
 import '../bloc/auth/auth_state.dart';
-import 'register_page.dart';
-import 'swipe_screen.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -31,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
               content: Text('Welcome ${state.email}'),
             ));
 
-            Navigator.pushReplacementNamed(context, '/swipescreen');
+            Navigator.pushReplacementNamed(context, '/home');
 
             // Navigate to home page
           } else if (state is AuthError) {
@@ -126,11 +124,7 @@ Widget _signUpLead(context) {
       const Text("   Don't you have an account?"),
       GestureDetector(
         onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const RegisterScreen(),
-              ));
+          Navigator.pushReplacementNamed(context, '/register');
         },
         child: const Text(
           " Sign Up",
