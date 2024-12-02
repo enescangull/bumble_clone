@@ -1,8 +1,12 @@
 import 'package:bumble_clone/presentation/auth/bloc/auth_bloc.dart';
+import 'package:bumble_clone/presentation/chat/pages/chat_screen.dart';
+import 'package:bumble_clone/presentation/custom__bottom_nav_bar.dart';
+import 'package:bumble_clone/presentation/likedyou/pages/liked_you_screen.dart';
 import 'package:bumble_clone/presentation/onboard/bloc/onboarding_bloc.dart';
 import 'package:bumble_clone/presentation/onboard/pages/onboarding_screen.dart';
 import 'package:bumble_clone/presentation/auth/pages/register_page.dart';
-import 'package:bumble_clone/presentation/screens/swipe_screen.dart';
+import 'package:bumble_clone/presentation/home/pages/swipe_screen.dart';
+import 'package:bumble_clone/presentation/profile/pages/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -27,10 +31,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       routes: {
+        '/nav': (context) => const CustomBottomNavBar(),
         '/home': (context) => const SwipeScreen(),
         '/onboarding': (context) => const OnboardingScreen(),
         '/register': (context) => const RegisterScreen(),
         '/login': (context) => const LoginPage(),
+        '/profile': (context) => const ProfileScreen(),
+        '/chat': (context) => const ChatScreen(),
+        '/likedyou': (context) => const LikedYouScreen(),
       },
       debugShowCheckedModeBanner: false,
       title: 'Bumble Clone',

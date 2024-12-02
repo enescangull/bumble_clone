@@ -28,6 +28,7 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
           birthDate: event.birthDate,
           gender: event.gender,
           preferredGender: event.preferredGender,
+          profilePicture: event.profilePicture,
         );
         emit(OnboardingSuccess());
       } catch (error) {

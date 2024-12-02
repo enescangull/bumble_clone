@@ -29,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
               content: Text('Welcome ${state.email}'),
             ));
 
-            Navigator.pushReplacementNamed(context, '/home');
+            Navigator.pushReplacementNamed(context, '/nav');
 
             // Navigate to home page
           } else if (state is AuthError) {

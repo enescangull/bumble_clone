@@ -18,6 +18,7 @@ class IUserRepository {
     required DateTime birthDate,
     required String gender,
     required String preferredGender,
+    required String profilePicture,
   }) async {
     await _service.updateAdditionalInfo(
       name: name,
@@ -25,6 +26,7 @@ class IUserRepository {
       gender: gender,
       preferredGender: preferredGender,
       userId: userId,
+      profilePicture: profilePicture,
     );
   }
 

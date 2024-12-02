@@ -1,4 +1,5 @@
 import 'package:bumble_clone/common/app_colors.dart';
+
 import 'package:bumble_clone/common/components/swipe_card.dart';
 import 'package:bumble_clone/common/constants.dart';
 import 'package:bumble_clone/core/services/auth_service.dart';
@@ -10,7 +11,7 @@ class SwipeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AuthService _service = AuthService();
+    AuthService service = AuthService();
     const String image = "https://picsum.photos/350/750";
 
     return Scaffold(
@@ -28,7 +29,7 @@ class SwipeScreen extends StatelessWidget {
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Logged out successfully')));
-                _service.signOut();
+                service.signOut();
                 Navigator.pushReplacementNamed(context, '/login');
               },
               icon: const Icon(Icons.logout_outlined))
