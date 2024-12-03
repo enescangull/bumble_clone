@@ -16,8 +16,8 @@ class AppTheme {
       ),
     ),
     textTheme: const TextTheme(
-      bodyLarge: TextStyle(color: AppColors.black, fontSize: 16),
-      bodyMedium: TextStyle(color: AppColors.grey, fontSize: 14),
+      bodyLarge: TextStyle(color: AppColors.black, fontSize: 18),
+      bodyMedium: TextStyle(color: AppColors.black, fontSize: 16),
       bodySmall: TextStyle(color: AppColors.lightGrey, fontSize: 12),
       headlineMedium: TextStyle(color: AppColors.lightGrey),
     ),

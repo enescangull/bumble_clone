@@ -6,14 +6,13 @@ class UserEntity {
   String? profilePicture;
   String? bio;
   String? gender;
-  String? preferredGender;
+
   DateTime? birthDate;
 
   UserEntity(
     this.name,
     this.profilePicture,
     this.gender,
-    this.preferredGender,
     this.birthDate,
     this.bio, {
     required this.id,

@@ -1,3 +1,4 @@
+import 'package:bumble_clone/core/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -5,8 +6,21 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
+    final AuthService service = AuthService();
+    return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Logged out successfully')));
+                service.signOut();
+                Navigator.pushReplacementNamed(context, '/login');
+              },
+              icon: const Icon(Icons.logout_outlined)),
+        ],
+      ),
+      body: const Center(
         child: Column(
           children: [Text("Profile Screen")],
         ),

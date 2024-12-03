@@ -7,8 +7,7 @@ class UserModel {
   final String passwordHash;
   String? profilePicture; // Opsiyonel alan
   String? bio; // Opsiyonel alan
-  String? gender; // Opsiyonel alan
-  String? preferredGender; // Opsiyonel alan
+  String? gender; // Opsiyonel alan // Opsiyonel alan
   DateTime? birthDate; // Nullable alan
 
   UserModel({
@@ -19,7 +18,6 @@ class UserModel {
     this.profilePicture,
     this.bio,
     this.gender,
-    this.preferredGender,
     this.birthDate,
   });
 
@@ -33,7 +31,7 @@ class UserModel {
       'profile_picture': profilePicture,
       'bio': bio,
       'gender': gender,
-      'preferred_gender': preferredGender,
+
       'birth_date': birthDate?.toIso8601String(), // Null kontrolü
     };
   }
@@ -48,7 +46,6 @@ class UserModel {
       profilePicture: json['profile_picture'] as String?,
       bio: json['bio'] as String?,
       gender: json['gender'] as String?,
-      preferredGender: json['preferred_gender'] as String?,
       birthDate: json['birth_date'] != null
           ? DateTime.parse(json['birth_date'] as String)
           : null,
@@ -62,9 +59,8 @@ class UserModel {
       name,
       profilePicture,
       bio,
-      gender,
       birthDate,
-      preferredGender,
+      gender,
       email: email,
       passwordHash: passwordHash,
     );
@@ -80,7 +76,6 @@ class UserModel {
       profilePicture: entity.profilePicture,
       bio: entity.bio,
       gender: entity.gender,
-      preferredGender: entity.preferredGender,
       birthDate: entity.birthDate,
     );
   }

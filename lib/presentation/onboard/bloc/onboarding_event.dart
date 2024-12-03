@@ -1,8 +1,6 @@
 abstract class OnboardingEvent {}
 
-class LoadInitialData extends OnboardingEvent {
-  void add() {}
-}
+class LoadInitialData extends OnboardingEvent {}
 
 class SubmitOnboardingData extends OnboardingEvent {
   final String name;

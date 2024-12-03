@@ -13,23 +13,22 @@ class UserService {
   }
 
   String getUserId() {
-    return _client.auth.currentUser!.id;
+    final String userId = _client.auth.currentUser!.id;
+    return userId;
   }
 
   Future<void> updateAdditionalInfo({
-    required String userId,
     required String name,
     required DateTime birthDate,
     required String gender,
-    required String preferredGender,
     required String profilePicture,
   }) async {
+    final userId = _client.auth.currentUser!.id;
     try {
       await _client.from('users').update({
         'name': name,
         'birth_date': birthDate.toIso8601String(),
         'gender': gender,
-        'preferred_gender': preferredGender,
         'profile_picture': profilePicture,
       }).eq('id', userId);
     } catch (e) {
@@ -37,18 +36,25 @@ class UserService {
     }
   }
 
-  Future<Map<String, dynamic>> getAuthenticatedUser() async {
-    try {
-      final currentUser = _client.auth.currentUser;
-      if (currentUser == null) {
-        throw Exception('None authenticated user found.');
-      }
-      final response =
-          await _client.from('users').select().eq('id', currentUser.id);
-      return response as Map<String, dynamic>;
-    } catch (e) {
-      throw Exception(e);
+  Future<UserModel> getAuthenticatedUser() async {
+    final currentUser = _client.auth.currentUser;
+
+    if (currentUser == null) {
+      throw Exception('None authenticated user');
     }
+
+    final String userId = currentUser.id;
+
+    final response = await _client
+        .from('users')
+        .select()
+        .eq('id', userId)
+        .maybeSingle(); // Sadece tek bir kayıt bekleniyorsa kullanılır
+    if (response == null) {
+      throw Exception('User not found');
+    }
+
+    return UserModel.fromJson(response);
   }
 
   Future<String?> uploadProfilePicture(String imagePath) async {
@@ -86,7 +92,6 @@ class UserService {
     //pick from gallery
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
-      print("image selected");
       return image.path;
     }
     return "";

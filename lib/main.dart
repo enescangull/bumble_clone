@@ -1,24 +1,27 @@
-import 'package:bumble_clone/presentation/auth/bloc/auth_bloc.dart';
-import 'package:bumble_clone/presentation/chat/pages/chat_screen.dart';
-import 'package:bumble_clone/presentation/custom__bottom_nav_bar.dart';
-import 'package:bumble_clone/presentation/likedyou/pages/liked_you_screen.dart';
-import 'package:bumble_clone/presentation/onboard/bloc/onboarding_bloc.dart';
-import 'package:bumble_clone/presentation/onboard/pages/onboarding_screen.dart';
-import 'package:bumble_clone/presentation/auth/pages/register_page.dart';
-import 'package:bumble_clone/presentation/home/pages/swipe_screen.dart';
-import 'package:bumble_clone/presentation/profile/pages/profile_page.dart';
+import 'package:bumble_clone/presentation/filter/bloc/filter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'core/services/supabase_service.dart';
 import 'core/theme/app_theme.dart';
+import 'presentation/auth/bloc/auth_bloc.dart';
 import 'presentation/auth/pages/login_page.dart';
+import 'presentation/auth/pages/register_page.dart';
+import 'presentation/chat/pages/chat_screen.dart';
+import 'presentation/custom__bottom_nav_bar.dart';
+import 'presentation/home/pages/swipe_screen.dart';
+import 'presentation/likedyou/pages/liked_you_screen.dart';
+import 'presentation/onboard/pages/onboarding_screen.dart';
+import 'presentation/profile/pages/profile_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SupabaseService.instance.initialize();
-  runApp(BlocProvider<AuthBloc>(
-    create: (context) => AuthBloc(),
+  runApp(MultiBlocProvider(
+    providers: [
+      BlocProvider(create: (context) => FilterBloc()),
+      BlocProvider(create: (context) => AuthBloc())
+    ],
     child: const MyApp(),
   ));
 }

@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:bumble_clone/common/app_colors.dart';
 import 'package:bumble_clone/common/components/custom_text_field.dart';
+import 'package:bumble_clone/common/components/date_input_field.dart';
+import 'package:bumble_clone/common/components/dropdown_genders.dart';
 import 'package:bumble_clone/common/constants.dart';
 import 'package:bumble_clone/core/services/user_service.dart';
 import 'package:bumble_clone/presentation/onboard/bloc/onboarding_bloc.dart';
@@ -21,8 +23,7 @@ class OnboardingScreen extends StatefulWidget {
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
   final UserService _service = UserService();
-  final FocusNode _monthFocusNode = FocusNode();
-  final FocusNode _yearFocusNode = FocusNode();
+
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _dayController = TextEditingController();
   final TextEditingController _monthController = TextEditingController();
@@ -154,7 +155,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             children: [
                               const Text("How do you identify?"),
                               const SizedBox(height: 10),
-                              _dropdownGenders(gender, true),
+                              DropdownGenders(
+                                value: gender,
+                                onSelected: (newValue) {
+                                  setState(() {
+                                    gender = newValue;
+                                  });
+                                },
+                              )
+                              // _dropdownGenders(gender, true),
                             ],
                           ),
                           const SizedBox(height: 25),
@@ -165,7 +174,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               const SizedBox(
                                 height: 10,
                               ),
-                              _dropdownGenders(preferredGender, false),
+                              DropdownGenders(
+                                value: preferredGender,
+                                onSelected: (newValue) {
+                                  setState(() {
+                                    preferredGender = newValue;
+                                  });
+                                },
+                              )
                             ],
                           ),
                           const SizedBox(height: 25),
@@ -174,102 +190,37 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             children: [
                               const Text("When's your birthday?"),
                               const SizedBox(height: 10),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  _buildDateInputField(
-                                    controller: _dayController,
-                                    hint: "DD",
-                                    maxLenght: 2,
-                                    onChanged: (text) {
-                                      if (text.length == 2) {
-                                        FocusScope.of(context)
-                                            .requestFocus(FocusNode());
-
-                                        FocusScope.of(context)
-                                            .requestFocus(_monthFocusNode);
-                                      }
+                              DateInputField(
+                                dayController: _dayController,
+                                monthController: _monthController,
+                                yearController: _yearController,
+                                onDateSelected: (selectedDate) {
+                                  setState(() {
+                                    birthDate = selectedDate;
+                                    age = _service.calculateAge(birthDate!);
+                                  });
+                                  showDialog(
+                                    barrierDismissible: false,
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        title: Text("You are $age years old",
+                                            textAlign: TextAlign.center),
+                                        content: const Text(
+                                            "Make sure this is your correct age as you can't change this later. ",
+                                            textAlign: TextAlign.center),
+                                        actions: [
+                                          TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: const Text("Approve"))
+                                        ],
+                                      );
                                     },
-                                  ),
-                                  const SizedBox(width: 5),
-                                  _buildDateInputField(
-                                    controller: _monthController,
-                                    hint: "MM",
-                                    maxLenght: 2,
-                                    focusNode: _monthFocusNode,
-                                    onChanged: (text) {
-                                      if (text.length == 2) {
-                                        FocusScope.of(context)
-                                            .requestFocus(_yearFocusNode);
-                                      }
-                                    },
-                                  ),
-                                  const SizedBox(width: 5),
-                                  _buildDateInputField(
-                                    controller: _yearController,
-                                    hint: "YYYY",
-                                    maxLenght: 4,
-                                    focusNode: _yearFocusNode,
-                                    onChanged: (text) {
-                                      if (_dayController.text.length == 2 &&
-                                          _monthController.text.length == 2 &&
-                                          _yearController.text.length == 4) {
-                                        String day = _dayController.text;
-                                        String month = _monthController.text;
-                                        String year = _yearController.text;
-
-                                        try {
-                                          String formattedDate =
-                                              "$day/$month/$year";
-                                          DateFormat format =
-                                              DateFormat("dd/MM/yyyy");
-                                          DateTime parsedDate =
-                                              format.parseStrict(formattedDate);
-
-                                          birthDate = parsedDate;
-
-                                          age =
-                                              _service.calculateAge(birthDate!);
-
-                                          showDialog(
-                                            barrierDismissible: false,
-                                            context: context,
-                                            builder: (context) {
-                                              return AlertDialog(
-                                                title: Text(
-                                                    "You are $age years old",
-                                                    textAlign:
-                                                        TextAlign.center),
-                                                content: const Text(
-                                                    "Make sure this is your correct age as you can't change this later. ",
-                                                    textAlign:
-                                                        TextAlign.center),
-                                                actions: [
-                                                  TextButton(
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                      child:
-                                                          const Text("Approve"))
-                                                ],
-                                              );
-                                            },
-                                          );
-                                        } catch (e) {
-                                          // Geçersiz bir tarih formatı durumunda
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            const SnackBar(
-                                                content: Text(
-                                                    "Please enter a valid date.")),
-                                          );
-                                        }
-                                      }
-                                    },
-                                  )
-                                ],
-                              ),
+                                  );
+                                },
+                              )
                             ],
                           ),
                         ],
@@ -284,55 +235,4 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       ),
     );
   }
-
-  Widget _dropdownGenders(Genders value, bool isGender) {
-    return Container(
-      decoration: BoxDecoration(
-          color: const Color.fromARGB(152, 255, 255, 255),
-          borderRadius: BorderRadius.circular(12)),
-      child: DropdownMenu<Genders>(
-        expandedInsets: EdgeInsets.zero,
-        inputDecorationTheme:
-            const InputDecorationTheme(fillColor: AppColors.background),
-        initialSelection: value,
-        onSelected: (Genders? newValue) {
-          if (isGender) {
-            gender = newValue!;
-          } else {
-            preferredGender = newValue!;
-          }
-        },
-        dropdownMenuEntries: [
-          ...Genders.values.map(
-            (gender) {
-              return DropdownMenuEntry(value: gender, label: gender.value);
-            },
-          )
-        ],
-      ),
-    );
-  }
-}
-
-Widget _buildDateInputField({
-  required TextEditingController controller,
-  required String hint,
-  required int maxLenght,
-  FocusNode? focusNode,
-  Function(String)? onChanged,
-}) {
-  return SizedBox(
-    width: 90,
-    child: TextField(
-      controller: controller,
-      maxLength: maxLenght,
-      keyboardType: TextInputType.number,
-      focusNode: focusNode,
-      decoration: InputDecoration(
-        counterText: "",
-        hintText: hint,
-      ),
-      onChanged: onChanged,
-    ),
-  );
 }
