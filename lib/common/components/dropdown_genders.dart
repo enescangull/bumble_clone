@@ -2,13 +2,12 @@ import 'package:bumble_clone/common/app_colors.dart';
 import 'package:bumble_clone/common/constants.dart';
 import 'package:flutter/material.dart';
 
+// Genders enum'a göre dropdown oluşturan widget.
 class DropdownGenders extends StatelessWidget {
   final Genders value;
-
   final Function(Genders) onSelected;
   const DropdownGenders(
       {super.key, required this.value, required this.onSelected});
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -16,7 +15,7 @@ class DropdownGenders extends StatelessWidget {
           color: const Color.fromARGB(152, 255, 255, 255),
           borderRadius: BorderRadius.circular(12)),
       child: DropdownMenu<Genders>(
-        expandedInsets: EdgeInsets.zero,
+        expandedInsets: EdgeInsets.zero, //tam genişliği kullanabilmesi için
         inputDecorationTheme:
             const InputDecorationTheme(fillColor: AppColors.background),
         initialSelection: value,

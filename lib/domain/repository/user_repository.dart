@@ -29,4 +29,8 @@ class IUserRepository {
   Future<UserModel> getAuthenticatedUser() async {
     return await _service.getAuthenticatedUser();
   }
+
+  int age(DateTime birthDate) {
+    return _service.calculateAge(birthDate);
+  }
 }

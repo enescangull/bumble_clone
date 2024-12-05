@@ -1,16 +1,17 @@
 import 'package:bumble_clone/domain/entities/user_entity.dart';
+import 'package:equatable/equatable.dart';
 
-class UserModel {
-  String id;
-  String? name;
+class UserModel extends Equatable {
+  final String id;
+  final String? name;
   final String email;
   final String passwordHash;
-  String? profilePicture; // Opsiyonel alan
-  String? bio; // Opsiyonel alan
-  String? gender; // Opsiyonel alan // Opsiyonel alan
-  DateTime? birthDate; // Nullable alan
+  final String? profilePicture; // Opsiyonel alan
+  final String? bio; // Opsiyonel alan
+  final String? gender; // Opsiyonel alan // Opsiyonel alan
+  final DateTime? birthDate; // Nullable alan
 
-  UserModel({
+  const UserModel({
     required this.id,
     required this.name,
     required this.email,
@@ -20,6 +21,9 @@ class UserModel {
     this.gender,
     this.birthDate,
   });
+  @override
+  List<Object?> get props =>
+      [id, name, email, passwordHash, profilePicture, bio, gender, birthDate];
 
   /// JSON'a dönüştürme
   Map<String, dynamic> toJson() {

@@ -1,6 +1,7 @@
 import 'package:bumble_clone/common/app_colors.dart';
 import 'package:flutter/material.dart';
 
+//genel olarak kullanılan text field
 Widget customTextField(TextEditingController controller, double? radius,
     TextInputType? keyboardLayout, String? label) {
   return TextField(

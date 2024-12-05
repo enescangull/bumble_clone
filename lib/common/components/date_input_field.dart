@@ -16,38 +16,43 @@ class DateInputField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final FocusNode _monthFocusNode = FocusNode();
-    final FocusNode _yearFocusNode = FocusNode();
+    final FocusNode monthFocusNode = FocusNode(); //Ay alanı için focus node
+    final FocusNode yearFocusNode = FocusNode(); //yıl için oluşturulan node
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         _buildDateInputField(
+          //Doğum tarihinin gün kısmı için,oluşturulan alan
           controller: dayController,
           hint: "DD",
           maxLenght: 2,
           onChanged: (text) {
             if (text.length == 2) {
               FocusScope.of(context).requestFocus(FocusNode());
-              FocusScope.of(context).requestFocus(_monthFocusNode);
+              FocusScope.of(context)
+                  .requestFocus(monthFocusNode); //Ay kısmına geçiliyor
             }
           },
         ),
         const SizedBox(width: 5),
         _buildDateInputField(
           controller: monthController,
-          focusNode: _monthFocusNode,
+          focusNode:
+              monthFocusNode, //Focus Node'da ay kısmı olduğunu `monthFocusNode` değişkeniyle belirtiyoruz
           hint: "MM",
           maxLenght: 2,
           onChanged: (text) {
             if (text.length == 2) {
-              FocusScope.of(context).requestFocus(_yearFocusNode);
+              FocusScope.of(context)
+                  .requestFocus(yearFocusNode); //Yıl kısmına geçiliyor
             }
           },
         ),
         const SizedBox(width: 5),
         _buildDateInputField(
           controller: yearController,
-          focusNode: _yearFocusNode,
+          focusNode:
+              yearFocusNode, //Focus Node'da yıl kısmı olduğunu `yearFocusNode` değişkeniyle belirtiyoruz
           hint: "YYYY",
           maxLenght: 4,
           onChanged: (text) {
@@ -55,10 +60,8 @@ class DateInputField extends StatelessWidget {
                 monthController.text.length == 2 &&
                 yearController.text.length == 4) {
               try {
-                String formattedDate =
-                    "${dayController.text}/${monthController.text}/${yearController.text}";
-                DateFormat format = DateFormat("dd/MM/yyyy");
-                DateTime parsedDate = format.parseStrict(formattedDate);
+                DateTime parsedDate = parseDate(dayController.text,
+                    monthController.text, yearController.text);
 
                 onDateSelected(parsedDate);
               } catch (e) {
@@ -73,6 +76,13 @@ class DateInputField extends StatelessWidget {
       ],
     );
   }
+}
+
+//dCT = dayController.text, mCT = monthController.text, yCT = yearController.text
+DateTime parseDate(String dCT, String mCT, String yCT) {
+  DateFormat format = DateFormat("dd/MM/yyyy");
+  String formattedDate = "$dCT/$mCT/$yCT";
+  return format.parseStrict(formattedDate);
 }
 
 Widget _buildDateInputField({

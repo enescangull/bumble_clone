@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class AppColors {
+final class AppColors {
   static const Color primaryYellow = Color(0xFFFFD54F); // Bumble'ın sarı tonu
   static const Color darkYellow = Color(0xFFF9A825); // Daha koyu bir sarı
   static const Color white = Color(0xFFFFFFFF);

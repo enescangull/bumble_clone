@@ -67,19 +67,18 @@ class UserService {
           _client.storage.from('profile_pictures').getPublicUrl(fileName);
       return publicUrl;
     } catch (e) {
-      print(e);
       return null;
     }
   }
 
-  int calculateAge(DateTime birthdate) {
+  int calculateAge(DateTime birthDate) {
     final currentDate = DateTime.now();
-    int age = currentDate.year - birthdate.year;
+    int age = currentDate.year - birthDate.year;
 
     // Eğer henüz doğum günü gelmediyse, yaşı bir azaltırız
-    if (currentDate.month < birthdate.month ||
-        (currentDate.month == birthdate.month &&
-            currentDate.day < birthdate.day)) {
+    if (currentDate.month < birthDate.month ||
+        (currentDate.month == birthDate.month &&
+            currentDate.day < birthDate.day)) {
       age--;
     }
 

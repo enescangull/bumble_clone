@@ -19,15 +19,15 @@ class FilterSheet extends StatefulWidget {
 
 class _FilterSheetState extends State<FilterSheet> {
   double? ageMin, ageMax;
-  double? maxDistance = 100;
+  double? maxDistance;
   Genders? preferredGender;
   RangeValues? rangeValues;
-  RangeLabels? labels = const RangeLabels('18', '80');
+  RangeLabels? labels;
 
   @override
   void initState() {
     super.initState();
-    preferredGender = Genders.female;
+
     context.read<FilterBloc>().add(GetFilterParameters());
   }
 
@@ -41,8 +41,6 @@ class _FilterSheetState extends State<FilterSheet> {
               ageMin = state.preferencesModel.ageMin.toDouble();
               ageMax = state.preferencesModel.ageMax.toDouble();
               rangeValues = RangeValues(ageMin ?? 18, ageMax ?? 80);
-              labels = RangeLabels(
-                  rangeValues!.start.toString(), rangeValues!.end.toString());
               maxDistance = state.preferencesModel.distance.toDouble();
               preferredGender = Genders.values.firstWhere(
                 (gender) =>
@@ -120,7 +118,7 @@ class _FilterSheetState extends State<FilterSheet> {
                                 padding:
                                     const EdgeInsets.only(left: 16, top: 10),
                                 child: Text(
-                                  "Between ${labels!.start} and ${labels!.end}",
+                                  "Between ${ageMin!.round().toString()} and ${ageMax!.round().toString()}",
                                   style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                               ),

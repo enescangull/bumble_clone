@@ -6,6 +6,7 @@ class AppTheme {
     brightness: Brightness.light,
     colorSchemeSeed: AppColors.primaryYellow,
     scaffoldBackgroundColor: AppColors.background,
+    fontFamily: 'Urbanist',
     appBarTheme: const AppBarTheme(
       backgroundColor: AppColors.transparent,
       iconTheme: IconThemeData(color: AppColors.black),

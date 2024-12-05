@@ -1,23 +1,20 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
-
 import 'package:bumble_clone/domain/entities/preferences_entity.dart';
+import 'package:equatable/equatable.dart';
 
-class PreferencesModel {
+class PreferencesModel extends Equatable {
   final String userId;
   final String preferredGender;
   final int ageMin;
   final int ageMax;
   final int distance;
 
-  PreferencesModel({
+  const PreferencesModel({
     required this.userId,
     required this.preferredGender,
     required this.ageMin,
     required this.ageMax,
     required this.distance,
   });
-
   factory PreferencesModel.fromJson(Map<String, dynamic> json) {
     return PreferencesModel(
       userId: json['user_id'] as String,
@@ -27,7 +24,6 @@ class PreferencesModel {
       preferredGender: json['preferred_gender'] as String,
     );
   }
-
   PreferencesEntity toEntity() {
     return PreferencesEntity(
       userId: userId,
@@ -47,4 +43,7 @@ class PreferencesModel {
       distance: entity.distance,
     );
   }
+  @override
+  List<Object?> get props =>
+      [ageMin, ageMax, distance, userId, preferredGender];
 }

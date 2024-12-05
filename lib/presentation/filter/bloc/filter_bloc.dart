@@ -21,19 +21,17 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
 
     on<UpdatePreferences>(
       (event, emit) async {
+        emit(FiltersLoading());
         try {
-          final preferences = _preferenceRepository.updatePreferences(
+          await _preferenceRepository.updatePreferences(
               ageMax: event.ageMax,
               ageMin: event.ageMin,
               distance: event.distance,
               preferredGender: event.preferredGender);
-        } catch (e) {}
+        } catch (e) {
+          throw Exception(e.toString());
+        }
       },
     );
-  }
-  @override
-  void onTransition(Transition<FilterEvent, FilterState> transition) {
-    super.onTransition(transition);
-    print("Transition: $transition");
   }
 }

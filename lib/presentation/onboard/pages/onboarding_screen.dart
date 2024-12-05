@@ -1,5 +1,8 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:bumble_clone/common/app_colors.dart';
 import 'package:bumble_clone/common/components/custom_text_field.dart';
 import 'package:bumble_clone/common/components/date_input_field.dart';
@@ -9,10 +12,6 @@ import 'package:bumble_clone/core/services/user_service.dart';
 import 'package:bumble_clone/presentation/onboard/bloc/onboarding_bloc.dart';
 import 'package:bumble_clone/presentation/onboard/bloc/onboarding_event.dart';
 import 'package:bumble_clone/presentation/onboard/bloc/onboarding_state.dart';
-
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -76,6 +75,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     try {
                       final String? profilePicture =
                           await _service.uploadProfilePicture(_imagePath!);
+                      // ignore: use_build_context_synchronously
                       BlocProvider.of<OnboardingBloc>(context)
                           .add(SubmitOnboardingData(
                         birthDate: birthDate!,
@@ -85,6 +85,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         profilePicture: profilePicture!,
                       ));
                     } catch (e) {
+                      // ignore: use_build_context_synchronously
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                           content: Text("Failed to create user")));
                     }
