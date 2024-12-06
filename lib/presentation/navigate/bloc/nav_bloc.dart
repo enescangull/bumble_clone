@@ -8,5 +8,8 @@ class BottomNavBloc extends Bloc<BottomNavEvent, BottomNavState> {
     on<BottomNavItemSelected>((event, emit) {
       emit(BottomNavInitial(event.index));
     });
+    on<Reset>(
+      (event, emit) => emit(BottomNavInitial(1)),
+    );
   }
 }

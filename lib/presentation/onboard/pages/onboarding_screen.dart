@@ -46,6 +46,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(state.error)),
               );
+            } else if (state is OnboardingLoading) {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return const Center(child: CircularProgressIndicator());
+                },
+              );
             }
           },
           child: BlocBuilder<OnboardingBloc, OnboardingState>(

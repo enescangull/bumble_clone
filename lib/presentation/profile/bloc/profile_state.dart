@@ -1,5 +1,3 @@
-import 'package:bumble_clone/data/models/preferences_model.dart';
-
 import '../../../data/models/user_model.dart';
 
 abstract class ProfileState {}
@@ -12,9 +10,8 @@ class ProfileLoading extends ProfileState {}
 
 class ProfileLoaded extends ProfileState {
   final UserModel userModel;
-  final PreferencesModel preferencesModel;
 
-  ProfileLoaded({required this.userModel, required this.preferencesModel});
+  ProfileLoaded({required this.userModel});
 }
 
 class ProfileError extends ProfileState {

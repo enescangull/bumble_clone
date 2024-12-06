@@ -9,3 +9,5 @@ class LoadedProfile extends ProfileEvent {
 
   LoadedProfile({required this.userModel});
 }
+
+class ResetProfile extends ProfileEvent {}

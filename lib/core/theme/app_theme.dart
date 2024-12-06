@@ -21,6 +21,8 @@ class AppTheme {
       bodyMedium: TextStyle(color: AppColors.black, fontSize: 16),
       bodySmall: TextStyle(color: AppColors.lightGrey, fontSize: 12),
       headlineMedium: TextStyle(color: AppColors.lightGrey),
+      headlineLarge: TextStyle(
+          color: AppColors.black, fontSize: 32, fontWeight: FontWeight.w600),
     ),
     buttonTheme: const ButtonThemeData(
       buttonColor: AppColors.primaryYellow,

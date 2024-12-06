@@ -19,7 +19,7 @@ class AuthService {
           await _client.auth.signUp(password: password, email: email);
 
       if (response.user == null) {
-        throw Exception("Kullanıcı oluşturulamadı!");
+        throw Exception("User not created!");
       }
 
       // Şifre hash'ini oluştur
@@ -46,8 +46,6 @@ class AuthService {
       });
       return user;
     } catch (e) {
-      // Hata yönetimi
-      print("Kayıt işlemi sırasında bir hata oluştu: $e");
       rethrow;
     }
   }

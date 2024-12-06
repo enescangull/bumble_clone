@@ -28,6 +28,12 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    currentIndex = 1;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -45,8 +51,9 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
                   context
                       .read<BottomNavBloc>()
                       .add(BottomNavItemSelected(index));
-                  if (index == 2) {
-                    BlocProvider.of<ProfileBloc>(context).add(LoadingProfile());
+                  if (index == 0) {
+                    context.read<ProfileBloc>().add(LoadingProfile());
+                    //   BlocProvider.of<ProfileBloc>(context).add(LoadingProfile());
                   }
                 },
                 items: [

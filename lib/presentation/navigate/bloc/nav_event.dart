@@ -5,3 +5,5 @@ class BottomNavItemSelected extends BottomNavEvent {
 
   BottomNavItemSelected(this.index);
 }
+
+class Reset extends BottomNavEvent {}

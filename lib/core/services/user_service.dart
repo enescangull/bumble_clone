@@ -1,8 +1,12 @@
 import 'dart:io';
 
+import 'package:http/http.dart' as http;
+
 import 'package:bumble_clone/data/models/user_model.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '../../common/env.dart';
 
 class UserService {
   final SupabaseClient _client = Supabase.instance.client;
@@ -33,6 +37,21 @@ class UserService {
       }).eq('id', userId);
     } catch (e) {
       throw Exception("Error saving user data: $e");
+    }
+  }
+
+  Future<void> deleteAccount() async {
+    final authId = _client.auth.currentUser!.id;
+    final response = await http.delete(
+        Uri.parse('${SupaBase.supabaseUrl}/auth/v1/admin/users/$authId'),
+        headers: {
+          'apikey': SupaBase.supabaseSecretKey,
+          'Authorization': 'Bearer ${SupaBase.supabaseSecretKey}',
+        });
+    if (response == 200) {
+      print('User deleted from Supabase Auth');
+    } else {
+      print('something gone wrong');
     }
   }
 

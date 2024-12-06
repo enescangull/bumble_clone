@@ -18,7 +18,7 @@ class PreferencesService {
         .select()
         .eq('user_id', userId)
         .maybeSingle(); // Sadece tek bir kayıt bekleniyorsa kullanılır
-    print(response);
+
     if (response == null) {
       throw Exception('Preferences bulunamadı');
     }

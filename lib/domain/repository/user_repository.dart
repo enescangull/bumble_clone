@@ -26,6 +26,10 @@ class IUserRepository {
     );
   }
 
+  Future<void> deleteAccount() async {
+    _service.deleteAccount();
+  }
+
   Future<UserModel> getAuthenticatedUser() async {
     return await _service.getAuthenticatedUser();
   }
