@@ -1,4 +1,5 @@
 import 'package:bumble_clone/data/models/preferences_model.dart';
+import 'package:bumble_clone/data/models/user_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class PreferencesService {
@@ -24,6 +25,27 @@ class PreferencesService {
     }
 
     return PreferencesModel.fromJson(response);
+  }
+
+  Future<List<UserModel>> fetchFilteredUsers(String userId) async {
+    final PreferencesModel currentUserPreferences =
+        await fetchUserPreferences();
+    final minDate = DateTime(
+        DateTime.now().year - currentUserPreferences.ageMin,
+        DateTime.now().month,
+        DateTime.now().day);
+    final maxDate = DateTime(
+        DateTime.now().year - currentUserPreferences.ageMax,
+        DateTime.now().month,
+        DateTime.now().day);
+    final response = await _client
+        .from('users')
+        .select()
+        .filter('id', 'neq', userId)
+        .filter('gender', 'eq', currentUserPreferences.preferredGender)
+        .filter('birth_date', 'lte', minDate.toIso8601String())
+        .filter('birth_date', 'gte', maxDate.toIso8601String());
+    return (response as List).map((user) => UserModel.fromJson(user)).toList();
   }
 
   Future<void> onboardPreferences({

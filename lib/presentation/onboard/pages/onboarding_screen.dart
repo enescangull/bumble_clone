@@ -40,7 +40,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         create: (context) => OnboardingBloc(),
         child: BlocListener<OnboardingBloc, OnboardingState>(
           listener: (BuildContext context, state) {
-            if (state is OnboardingSuccess) {
+            if (state is OnboardingLoading) {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return const Center(child: CircularProgressIndicator());
+                },
+              );
+            } else if (state is OnboardingSuccess) {
+              if (Navigator.canPop(context)) {
+                Navigator.pop(context);
+              }
               Navigator.pushReplacementNamed(context, '/nav');
             } else if (state is OnboardingFailure) {
               ScaffoldMessenger.of(context).showSnackBar(

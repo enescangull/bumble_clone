@@ -12,6 +12,10 @@ class IUserRepository {
     return _service.getUserId();
   }
 
+  Future<void> updateLocation() async {
+    await _service.updateLocation();
+  }
+
   Future<void> updateUser({
     required String name,
     required DateTime birthDate,

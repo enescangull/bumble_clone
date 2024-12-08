@@ -1,5 +1,8 @@
 import 'dart:io';
 
+import 'package:bumble_clone/core/services/preferences_service.dart';
+import 'package:bumble_clone/data/models/preferences_model.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:bumble_clone/data/models/user_model.dart';
@@ -10,6 +13,7 @@ import '../../common/env.dart';
 
 class UserService {
   final SupabaseClient _client = Supabase.instance.client;
+  final PreferencesService _preferencesService = PreferencesService();
 
   Future<List<UserModel>?> fetchUsers() async {
     final response = await _client.from('users').select();
@@ -42,17 +46,12 @@ class UserService {
 
   Future<void> deleteAccount() async {
     final authId = _client.auth.currentUser!.id;
-    final response = await http.delete(
+    await http.delete(
         Uri.parse('${SupaBase.supabaseUrl}/auth/v1/admin/users/$authId'),
         headers: {
           'apikey': SupaBase.supabaseSecretKey,
           'Authorization': 'Bearer ${SupaBase.supabaseSecretKey}',
         });
-    if (response == 200) {
-      print('User deleted from Supabase Auth');
-    } else {
-      print('something gone wrong');
-    }
   }
 
   Future<UserModel> getAuthenticatedUser() async {
@@ -74,6 +73,32 @@ class UserService {
     }
 
     return UserModel.fromJson(response);
+  }
+
+  Future<Position?> getCurrentLocation() async {
+    bool serviceEnabled;
+    LocationPermission? permission;
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return null;
+    }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied || permission == null) {
+      permission = await Geolocator.requestPermission();
+    }
+    return Geolocator.getCurrentPosition();
+  }
+
+  Future<void> updateLocation() async {
+    final currentUser = _client.auth.currentUser;
+    final userId = currentUser!.id;
+    Position? position = await getCurrentLocation();
+    if (position != null) {
+      await _client.from('users').update({
+        'lat': position.latitude.toString(),
+        'long': position.longitude.toString(),
+      }).eq('id', userId);
+    }
   }
 
   Future<String?> uploadProfilePicture(String imagePath) async {

@@ -28,6 +28,7 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
               ageMin: event.ageMin,
               distance: event.distance,
               preferredGender: event.preferredGender);
+          emit(PreferencesUpdated());
         } catch (e) {
           throw Exception(e.toString());
         }

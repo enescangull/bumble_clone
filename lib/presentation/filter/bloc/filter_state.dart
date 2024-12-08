@@ -12,6 +12,8 @@ class FiltersLoaded extends FilterState {
   FiltersLoaded({required this.preferencesModel});
 }
 
+class PreferencesUpdated extends FilterState {}
+
 class FiltersFailure extends FilterState {
   final String message;
 

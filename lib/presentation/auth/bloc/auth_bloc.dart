@@ -1,12 +1,13 @@
 import 'package:bumble_clone/domain/repository/auth_repository.dart';
+import 'package:bumble_clone/domain/repository/user_repository.dart';
 
 import 'package:bumble_clone/presentation/auth/bloc/auth_event.dart';
 import 'package:bumble_clone/presentation/auth/bloc/auth_state.dart';
-import 'package:bumble_clone/presentation/navigate/bloc/nav_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository _authRepository = AuthRepository();
+  final IUserRepository _userRepository = IUserRepository();
 
   AuthBloc() : super(AuthInitial()) {
     on<LoginEvent>(
@@ -15,6 +16,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         try {
           await _authRepository.login(event.email, event.password);
           final email = _authRepository.getCurrentUserEmail();
+          _userRepository.updateLocation();
           emit(Authenticated(email!));
           // emit(AuthOnboardingRequired());
         } catch (e) {
@@ -32,6 +34,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           }
 
           await _authRepository.register(event.email, event.password);
+          _userRepository.updateLocation();
 
           emit(AuthOnboardingRequired());
         } catch (e) {
