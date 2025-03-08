@@ -1,16 +1,47 @@
+import 'package:bumble_clone/core/services/user_service.dart';
 import 'package:bumble_clone/data/models/user_model.dart';
 import 'package:bumble_clone/presentation/filter/pages/filter_sheet.dart';
-import 'package:bumble_clone/presentation/navigate/bloc/nav_bloc.dart';
-import 'package:bumble_clone/presentation/navigate/bloc/nav_event.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:bumble_clone/core/services/swipe_service.dart';
+import 'package:bumble_clone/common/components/blurred_image.dart'; // Import BlurredImage widget
 
-class LikedYouScreen extends StatelessWidget {
+class LikedYouScreen extends StatefulWidget {
   const LikedYouScreen({super.key});
 
   @override
+  State<LikedYouScreen> createState() => _LikedYouScreenState();
+}
+
+class _LikedYouScreenState extends State<LikedYouScreen> {
+  final SwipeService _swipeService = SwipeService();
+  final UserService _userService = UserService();
+  List<UserModel>? likedUsers;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadLikedUsers();
+  }
+
+  Future<void> _loadLikedUsers() async {
+    final currentUser = await _userService.getAuthenticatedUser();
+    if (currentUser != null) {
+      final users = await _swipeService.getUsersWhoLikedYou(currentUser.id);
+      if (mounted) {
+        setState(() {
+          likedUsers = users;
+        });
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    List<UserModel>? users;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -29,34 +60,23 @@ class LikedYouScreen extends StatelessWidget {
           )
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "When people are into you, the'll appear here. Enjoy.",
-              style:
-                  Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 22),
-            ),
-            const Spacer(),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 20),
-                child: Visibility(
-                    visible: true,
-                    child: ElevatedButton(
-                        onPressed: () {
-                          context
-                              .read<BottomNavBloc>()
-                              .add(BottomNavItemSelected(1));
-                        },
-                        child: const Text("See more people"))),
-              ),
-            )
-          ],
-        ),
-      ),
+      body: likedUsers == null
+          ? const Center(child: CircularProgressIndicator())
+          : likedUsers!.isEmpty
+              ? const Center(
+                  child: Text(
+                      "When people are into you, they'll appear here. Enjoy."))
+              : GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 0.7,
+                  ),
+                  itemCount: likedUsers!.length,
+                  itemBuilder: (context, index) {
+                    final user = likedUsers![index];
+                    return BlurredImage(imageUrl: user.profilePicture);
+                  },
+                ),
     );
   }
 }

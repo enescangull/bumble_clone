@@ -1,13 +1,21 @@
+import 'package:bumble_clone/core/exceptions/app_exceptions.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../domain/repository/preference_repository.dart';
 import 'filter_event.dart';
 import 'filter_state.dart';
 
+/// Filtreleme işlemlerini yöneten BLoC sınıfı.
+///
+/// Bu sınıf, kullanıcı tercihlerinin alınması ve güncellenmesi gibi
+/// filtreleme işlemlerini yönetir.
 class FilterBloc extends Bloc<FilterEvent, FilterState> {
-  final PreferenceRepository _preferenceRepository = PreferenceRepository();
+  final PreferenceRepository _preferenceRepository;
 
-  FilterBloc() : super(FiltersInitial()) {
+  /// FilterBloc sınıfının constructor'ı.
+  ///
+  /// [_preferenceRepository] parametresi, tercih işlemlerini gerçekleştiren repository'yi alır.
+  FilterBloc(this._preferenceRepository) : super(FiltersInitial()) {
     on<GetFilterParameters>((event, emit) async {
       emit(FiltersLoading());
       try {
@@ -30,7 +38,11 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
               preferredGender: event.preferredGender);
           emit(PreferencesUpdated());
         } catch (e) {
-          throw Exception(e.toString());
+          if (e is AppException) {
+            emit(FiltersFailure(e.message));
+          } else {
+            emit(FiltersFailure(e.toString()));
+          }
         }
       },
     );

@@ -9,6 +9,7 @@ final class AppColors {
   static const Color lightGrey = Color(0xFFBDBDBD); // Açık gri
   static const Color background = Color(0xFFF5F5F5); // Uygulama arka planı
   static const Color errorRed = Color(0xFFD32F2F); // Hata rengi
+  static const Color red = Colors.red;
   static const Color transparent = Colors.transparent;
   static const Color transparentGrey = Color.fromARGB(152, 255, 255, 255);
 }

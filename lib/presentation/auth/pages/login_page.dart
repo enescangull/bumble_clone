@@ -3,10 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/app_colors.dart';
 import '../../../common/constants.dart';
+import '../../../common/ui_constants.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
 
+/// Kullanıcı giriş ekranı.
+///
+/// Bu ekran, kullanıcıların e-posta ve şifre ile giriş yapmalarını sağlar.
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -25,12 +29,7 @@ class _LoginPageState extends State<LoginPage> {
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) async {
           if (state is Authenticated) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('Welcome ${state.email}'),
-            ));
-
             Navigator.pushReplacementNamed(context, '/nav');
-
             // Navigate to home page
           } else if (state is AuthError) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -47,8 +46,10 @@ class _LoginPageState extends State<LoginPage> {
             return Scaffold(
               body: SafeArea(
                   child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 25, vertical: 50),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: UIConstants.paddingLarge,
+                  vertical: UIConstants.paddingExtraLarge,
+                ),
                 child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -57,22 +58,28 @@ class _LoginPageState extends State<LoginPage> {
                       Column(
                         children: [
                           _emailField(emailController),
-                          const SizedBox(height: 10),
+                          const SizedBox(height: UIConstants.paddingSmall),
                           _passwordField(passwordController, () {
                             setState(() {
                               _isVisible = !_isVisible;
                             });
                           }, _isVisible),
-                          const SizedBox(height: 5),
+                          const SizedBox(height: UIConstants.paddingSmall / 2),
                           _signUpLead(context),
-                          const SizedBox(height: 20),
-                          OutlinedButton(
+                          const SizedBox(height: UIConstants.paddingMedium),
+                          ElevatedButton(
                               onPressed: () {
                                 BlocProvider.of<AuthBloc>(context).add(
                                     LoginEvent(
                                         email: emailController.text,
                                         password: passwordController.text));
                               },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.darkYellow,
+                                foregroundColor: AppColors.background,
+                                minimumSize: const Size(
+                                    double.infinity, UIConstants.buttonHeight),
+                              ),
                               child: const Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -95,6 +102,9 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
+/// E-posta giriş alanı.
+///
+/// [controller] parametresi, metin alanının kontrolcüsünü alır.
 Widget _emailField(TextEditingController controller) {
   return TextField(
     keyboardType: TextInputType.emailAddress,
@@ -103,6 +113,11 @@ Widget _emailField(TextEditingController controller) {
   );
 }
 
+/// Şifre giriş alanı.
+///
+/// [controller] parametresi, metin alanının kontrolcüsünü alır.
+/// [onPressed] parametresi, şifre görünürlüğü düğmesinin tıklama işlevini alır.
+/// [isVisible] parametresi, şifrenin görünür olup olmadığını belirtir.
 Widget _passwordField(
     TextEditingController controller, VoidCallback? onPressed, bool isVisible) {
   return TextField(
@@ -111,13 +126,18 @@ Widget _passwordField(
         hintText: "Password",
         suffixIcon: IconButton(
             onPressed: onPressed,
-            icon: Icon(isVisible
-                ? Icons.visibility_outlined
-                : Icons.visibility_off_outlined))),
+            icon: Icon(
+                isVisible
+                    ? Icons.visibility_outlined
+                    : Icons.visibility_off_outlined,
+                size: UIConstants.iconSize))),
     controller: controller,
   );
 }
 
+/// Kayıt olma yönlendirme satırı.
+///
+/// [context] parametresi, geçerli yapı bağlamını alır.
 Widget _signUpLead(context) {
   return Row(
     children: [
@@ -135,19 +155,16 @@ Widget _signUpLead(context) {
   );
 }
 
-// ignore: camel_case_types
+/// Logo ve slogan bileşeni.
 class _logoAndSentence extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         //logo
-        SizedBox(
-          height: 100,
-          child: Image.asset(
-            Constants.bumbleLogo,
-            fit: BoxFit.cover,
-          ),
+        const SizedBox(
+          height: UIConstants.appBarHeight * 1.5,
+          child: Image(image: AssetImage(Constants.bumbleLogo)),
         ),
         //sentence
         Text(

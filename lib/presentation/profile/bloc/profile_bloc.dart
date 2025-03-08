@@ -1,3 +1,4 @@
+import 'package:bumble_clone/core/exceptions/app_exceptions.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/models/user_model.dart';
@@ -5,9 +6,17 @@ import '../../../domain/repository/user_repository.dart';
 import 'profile_event.dart';
 import 'profile_state.dart';
 
+/// Profil işlemlerini yöneten BLoC sınıfı.
+///
+/// Bu sınıf, kullanıcı profilinin yüklenmesi ve sıfırlanması gibi
+/// profil işlemlerini yönetir.
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
-  final IUserRepository _userRepository = IUserRepository();
-  ProfileBloc() : super(ProfileInitial()) {
+  final IUserRepository _userRepository;
+
+  /// ProfileBloc sınıfının constructor'ı.
+  ///
+  /// [_userRepository] parametresi, kullanıcı işlemlerini gerçekleştiren repository'yi alır.
+  ProfileBloc(this._userRepository) : super(ProfileInitial()) {
     on<LoadingProfile>(
       (event, emit) async {
         emit(ProfileLoading());
@@ -16,7 +25,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
           emit(ProfileLoaded(userModel: user));
         } catch (e) {
-          emit(ProfileError(e.toString()));
+          if (e is UserException) {
+            emit(ProfileError(e.message));
+          } else {
+            emit(ProfileError(e.toString()));
+          }
         }
       },
     );

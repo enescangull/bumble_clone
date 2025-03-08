@@ -25,6 +25,18 @@ class UserModel extends Equatable {
   List<Object?> get props =>
       [id, name, email, passwordHash, profilePicture, bio, gender, birthDate];
 
+  UserModel copyWith(String? newBio, String? newProfilePicture) {
+    return UserModel(
+        id: id,
+        name: name,
+        email: email,
+        passwordHash: passwordHash,
+        profilePicture: newProfilePicture ?? profilePicture,
+        bio: newBio ?? bio,
+        gender: gender,
+        birthDate: birthDate);
+  }
+
   /// JSON'a dönüştürme
   Map<String, dynamic> toJson() {
     return {

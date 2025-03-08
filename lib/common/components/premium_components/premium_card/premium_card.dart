@@ -1,5 +1,5 @@
 import 'package:bumble_clone/common/app_colors.dart';
-import 'package:bumble_clone/common/components/profile_components/premium_card/premium_features.dart';
+import 'package:bumble_clone/common/components/premium_components/premium_card/premium_features.dart';
 import 'package:flutter/material.dart';
 
 class PremiumCard extends StatefulWidget {

@@ -37,19 +37,19 @@ class AppTheme {
       fillColor: const Color.fromARGB(152, 255, 255, 255),
       enabledBorder: OutlineInputBorder(
         borderSide: const BorderSide(width: 0, strokeAlign: 0),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(30),
       ),
       focusedBorder: OutlineInputBorder(
         borderSide: const BorderSide(color: AppColors.primaryYellow),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(30),
       ),
       errorBorder: OutlineInputBorder(
         borderSide: const BorderSide(color: AppColors.errorRed),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(30),
       ),
       focusedErrorBorder: OutlineInputBorder(
         borderSide: const BorderSide(color: AppColors.errorRed),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(30),
       ),
       hintStyle: const TextStyle(color: AppColors.primaryYellow),
     ),

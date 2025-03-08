@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/app_colors.dart';
+import '../../../common/constants.dart';
+import '../../../common/ui_constants.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
@@ -19,6 +21,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController confirmPasswordController =
       TextEditingController();
   bool _isVisible = false;
+  bool _isVisibleConfirm = false;
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +29,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthOnboardingRequired) {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text("Let's learn about you"),
-            ));
             Navigator.pushReplacementNamed(
               context,
               '/onboarding',
@@ -49,13 +49,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
             return Scaffold(
               body: SafeArea(
                   child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 25, vertical: 50),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: UIConstants.paddingLarge,
+                  vertical: UIConstants.paddingExtraLarge,
+                ),
                 child: Center(
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const _logoAndSentence(),
-                      Expanded(child: Container()),
                       Column(
                         children: [
                           _emailField(emailController),
@@ -68,13 +70,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           const SizedBox(height: 5),
                           _passwordField(confirmPasswordController, () {
                             setState(() {
-                              _isVisible = !_isVisible;
+                              _isVisibleConfirm = !_isVisibleConfirm;
                             });
-                          }, _isVisible),
+                          }, _isVisibleConfirm),
                           const SizedBox(height: 5),
                           _signUpLead(context),
                           const SizedBox(height: 20),
-                          OutlinedButton(
+                          ElevatedButton(
                               onPressed: () {
                                 BlocProvider.of<AuthBloc>(context).add(
                                     RegisterEvent(
@@ -83,6 +85,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         confirmPassword:
                                             confirmPasswordController.text));
                               },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.darkYellow,
+                                foregroundColor: AppColors.background,
+                                minimumSize: const Size(
+                                    double.infinity, UIConstants.buttonHeight),
+                              ),
                               child: const Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -156,7 +164,7 @@ class _logoAndSentence extends StatelessWidget {
         SizedBox(
           height: 100,
           child: Image.asset(
-            'assets/bumble_logo.png',
+            Constants.bumbleLogo,
             fit: BoxFit.cover,
           ),
         ),

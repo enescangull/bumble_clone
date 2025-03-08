@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../presentation/auth/pages/login_page.dart';
 import '../presentation/auth/pages/register_page.dart';
 import '../presentation/chat/pages/chat_screen.dart';
+import '../presentation/edit_profile/pages/edit_profile_screen.dart';
 import '../presentation/home/pages/swipe_screen.dart';
 import '../presentation/likedyou/pages/liked_you_screen.dart';
 import '../presentation/navigate/pages/custom__bottom_nav_bar.dart';
@@ -18,6 +19,7 @@ class AppRoutes {
   static const String profile = '/profile';
   static const String chat = '/chat';
   static const String likedYou = '/likedyou';
+  static const String editProfile = '/editProfile';
 
   static Map<String, Widget Function(BuildContext)> get routes => {
         nav: (context) => const CustomBottomNavBar(),
@@ -28,5 +30,6 @@ class AppRoutes {
         profile: (context) => const ProfileScreen(),
         chat: (context) => const ChatScreen(),
         likedYou: (context) => const LikedYouScreen(),
+        editProfile: (context) => const EditProfileScreen(),
       };
 }

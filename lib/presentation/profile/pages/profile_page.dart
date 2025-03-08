@@ -2,15 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/app_colors.dart';
-import '../../../common/components/profile_components/premium_card/premium_card.dart';
-import '../../../common/components/profile_components/special_interactions.dart';
+import '../../../common/components/premium_components/premium_card/premium_card.dart';
+import '../../../common/components/premium_components/special_interactions.dart';
 import '../../../common/routes.dart';
+import '../../../common/ui_constants.dart';
+import '../../../core/di/service_locator.dart';
 import '../../../domain/repository/user_repository.dart';
 import '../bloc/profile_bloc.dart';
 import '../bloc/profile_event.dart';
 import '../bloc/profile_state.dart';
 import 'settings_bottom_sheet.dart';
 
+/// Kullanıcı profil ekranı.
+///
+/// Bu ekran, kullanıcının kendi profilini görüntülemesini ve düzenlemesini sağlar.
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
@@ -19,7 +24,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final IUserRepository _userService = IUserRepository();
+  final IUserRepository _userService = getIt<IUserRepository>();
   String? name;
   String? profilePicture;
   String? bio;
@@ -28,7 +33,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    // context.read<ProfileBloc>().add(LoadingProfile());
+    context.read<ProfileBloc>().add(LoadingProfile());
   }
 
   @override
@@ -46,7 +51,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   builder: (context) => const SettingsBottomSheet(),
                 );
               },
-              icon: const Icon(Icons.settings_outlined)),
+              icon: const Icon(Icons.settings_outlined,
+                  size: UIConstants.iconSize)),
         ],
       ),
       body: BlocListener<ProfileBloc, ProfileState>(
@@ -79,7 +85,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(left: 18, top: 8),
+                      padding: const EdgeInsets.only(
+                        left: UIConstants.paddingMedium,
+                        top: UIConstants.paddingSmall,
+                      ),
                       child: Row(
                         children: [
                           //CircleAvatar Image
@@ -97,7 +106,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                             ),
                           ),
-                          const SizedBox(width: 15),
+                          const SizedBox(width: UIConstants.paddingMedium),
                           // Name,and edit profile button
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -109,17 +118,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     .bodyLarge!
                                     .copyWith(fontWeight: FontWeight.w600),
                               ),
+                              const SizedBox(height: UIConstants.paddingSmall),
                               OutlinedButton(
                                   onPressed: () => Navigator.pushNamed(
-                                      context, AppRoutes.home),
+                                      context, AppRoutes.editProfile),
+                                  style: OutlinedButton.styleFrom(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: UIConstants.paddingSmall,
+                                      vertical: UIConstants.paddingSmall / 2,
+                                    ),
+                                  ),
                                   child: const Row(
                                     children: [
                                       Icon(
                                         Icons.edit,
-                                        size: 15,
+                                        size: UIConstants.smallIconSize,
                                         color: AppColors.grey,
                                       ),
-                                      SizedBox(width: 5),
+                                      SizedBox(width: UIConstants.paddingSmall),
                                       Text("Edit Profile",
                                           style:
                                               TextStyle(color: AppColors.grey)),
@@ -130,9 +146,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: UIConstants.paddingSmall),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: UIConstants.paddingLarge),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
@@ -141,11 +158,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
                                 border: Border.all(color: AppColors.lightGrey),
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(
+                                    UIConstants.borderRadiusMedium),
                               ),
                               child: const Padding(
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: 12, vertical: 8),
+                                    horizontal: UIConstants.paddingSmall,
+                                    vertical: UIConstants.paddingSmall),
                                 child: SpecialInteractions(
                                   icon: Icons.light_mode,
                                   title: "Spotlight",
@@ -154,17 +173,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                             ),
                           ),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: UIConstants.paddingSmall),
                           Expanded(
                             child: Container(
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
                                 border: Border.all(color: AppColors.lightGrey),
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(
+                                    UIConstants.borderRadiusMedium),
                               ),
                               child: const Padding(
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: 12, vertical: 8),
+                                    horizontal: UIConstants.paddingSmall,
+                                    vertical: UIConstants.paddingSmall),
                                 child: SpecialInteractions(
                                   icon: Icons.star_rounded,
                                   title: "SuperSwipe",
@@ -177,7 +198,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                     const Padding(
-                      padding: EdgeInsets.only(left: 16, top: 16, right: 16),
+                      padding: EdgeInsets.only(
+                        left: UIConstants.paddingMedium,
+                        top: UIConstants.paddingMedium,
+                        right: UIConstants.paddingMedium,
+                      ),
                       child: PremiumCard(),
                     ),
                   ],

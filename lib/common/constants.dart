@@ -1,5 +1,6 @@
 class Constants {
-  static const bumbleLogo = 'assets/bumble_logo.png';
+  static const bumbleLogo = 'assets/images/bumble_logo.png';
+  static const defaultPfp = 'assets/images/default_pfp.png';
 }
 
 enum Genders {

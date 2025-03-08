@@ -203,7 +203,6 @@ class _FilterSheetState extends State<FilterSheet> {
             return Center(
                 child: Column(
               children: [
-                const Text("AMINA KOYDUĞUMUN YERİNDE BİR PROBLEM VAR"),
                 IconButton(
                     onPressed: () {
                       Navigator.of(context).pop();
